@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hospitalapp/screens/Register.dart';
+import 'package:hospitalapp/services/auth.dart';
+import 'package:provider/provider.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -9,6 +11,9 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  String user='';
+  String pass='';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,9 +56,9 @@ class _SignInState extends State<SignIn> {
                           errorBorder: InputBorder.none,
                           disabledBorder: InputBorder.none,
                         ),
-                        onSubmitted: (value){
+                        onChanged: (val){
                           setState(() {
-
+                            user=val;
                           });
                         },
                       ),
@@ -78,8 +83,10 @@ class _SignInState extends State<SignIn> {
                     children: [
                       SizedBox(width: 12,),
                       Expanded(
-                        child: TextField(
+                        child: TextFormField(
                           //controller: myController,
+
+                          obscureText: true,
                           style: TextStyle(fontSize: 16, color: Colors.white),
                           decoration: InputDecoration(
                             hintText: 'Password',
@@ -90,9 +97,9 @@ class _SignInState extends State<SignIn> {
                             disabledBorder: InputBorder.none,
 
                           ),
-                          onSubmitted: (value){
+                          onChanged: (val){
                             setState(() {
-
+                              pass=val;
                             });
                           },
                         ),
@@ -132,8 +139,11 @@ class _SignInState extends State<SignIn> {
                   borderRadius: BorderRadius.all(Radius.circular(20))
               ),
               child: InkWell(
-                onTap: (){
-
+                onTap: () {
+                  context.read<AuthenticationService>().signIn(
+                    email: user,
+                    password: pass,
+                  );
                 },
                 child: Container(
                   height: 70,
@@ -147,6 +157,7 @@ class _SignInState extends State<SignIn> {
                 ),
               ),
             ),
+
 
 
 

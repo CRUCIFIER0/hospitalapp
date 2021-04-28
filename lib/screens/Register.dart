@@ -14,6 +14,8 @@ class _RegisterState extends State<Register> {
   String city='';
   String type='';
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
