@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hospitalapp/models/userdetails.dart';
 import 'package:hospitalapp/screens/SignIn.dart';
+import 'package:hospitalapp/services/auth.dart';
 
 class Register extends StatefulWidget {
   @override
@@ -8,12 +14,14 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  AuthService _auth = new AuthService();
 
   String user='';
   String pass='';
   String city='';
   String type='';
-
+  String name='';
+  final CollectionReference collectionReference = Firestore.instance.collection('hospitals');
 
 
   @override
@@ -165,7 +173,46 @@ class _RegisterState extends State<Register> {
                             //controller: myController,
                             style: TextStyle(fontSize: 16, color: Colors.white),
                             decoration: InputDecoration(
-                              hintText: 'Are you a "hospital" or "user"?',
+                              hintText: 'Hospital name',
+                              hintStyle: TextStyle(fontSize: 15.0, color: Colors.white),
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+
+                            ),
+                            onChanged: (val){
+                              setState(() {
+                                name=val;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 20, right: 8, left: 8),
+                    //color: Colors.grey,
+                    height: 60,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: Color(0xff575757),
+                      border: Border.all(
+                        color: Color(0xff575757),
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(17),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        SizedBox(width: 12,),
+                        Expanded(
+                          child: TextField(
+                            //controller: myController,
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                            decoration: InputDecoration(
+                              hintText: 'Are you a "hospital" or a "user"?',
                               hintStyle: TextStyle(fontSize: 15.0, color: Colors.white),
                               focusedBorder: InputBorder.none,
                               enabledBorder: InputBorder.none,
@@ -214,10 +261,15 @@ class _RegisterState extends State<Register> {
                     ),
                     child: InkWell(
                       onTap: () async{
-                        print(user);
-                        print(city);
-                        print(pass);
-                        print(type);
+
+                        final UserDetails userDetails = UserDetails(
+                          name: name,
+                          uid: '',
+                          city: city,
+                          email: user,
+                          type: type,
+                        );
+                        await _auth.createUserWithEmailAndPassword(user, pass,userDetails, context);
                       },
                       child: Container(
                         height: 70,
@@ -230,6 +282,16 @@ class _RegisterState extends State<Register> {
                         child:  Center(child: Text("Sign Up",textAlign: TextAlign.center,style: GoogleFonts.rubik(fontSize: 20, color: Colors.black, fontWeight: FontWeight.w700,),)),
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    child: ElevatedButton(
+                        onPressed: () async {
+                          await collectionReference.add({'name': user});
+                        },
+                        child: Text(
+                          'Add Data',
+                          style: TextStyle(fontSize: 20),
+                        )),
                   ),
 
 

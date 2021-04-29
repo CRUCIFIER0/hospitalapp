@@ -11,6 +11,9 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  bool loading = false;
+  final AuthService _auth = AuthService();
+
   String user='';
   String pass='';
 
@@ -139,11 +142,24 @@ class _SignInState extends State<SignIn> {
                   borderRadius: BorderRadius.all(Radius.circular(20))
               ),
               child: InkWell(
-                onTap: () {
-                  context.read<AuthenticationService>().signIn(
-                    email: user,
-                    password: pass,
-                  );
+                onTap: () async{
+                  dynamic result = await _auth.singnInUsingEmail(
+                      user, pass);
+                  if (result == null) {
+
+                    setState(() {
+                      // ignore: deprecated_member_use
+                      Scaffold.of(context).showSnackBar((SnackBar(
+                        content: new Text("Incorrect Email/ Password"),
+                        duration: Duration(seconds: 3),
+                      )));
+                      loading = false;
+                    });
+                  } else {
+                    setState(() {
+                      loading = false;
+                    });
+                  }
                 },
                 child: Container(
                   height: 70,

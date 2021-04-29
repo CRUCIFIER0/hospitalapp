@@ -1,34 +1,82 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:hospitalapp/models/user.dart';
+import 'package:hospitalapp/models/userdetails.dart';
+import 'package:hospitalapp/services/database.dart';
 
-class AuthenticationService {
-  final FirebaseAuth _firebaseAuth;
+class AuthService{
 
-  AuthenticationService(this._firebaseAuth);
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Stream<User> get authStateChanges => _firebaseAuth.idTokenChanges();
+  Stream<String> get onAuthStateChanged =>
+      _auth.onAuthStateChanged.map(
+            (FirebaseUser user) => user?.uid,
+      );
 
-
-  Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+  //
+  User _userFromFirebaseUser(FirebaseUser user) {
+    return user != null ? User(uid: user.uid) : null;
   }
 
-  Future<String> signIn({String email, String password}) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return "Signed in";
-    } on FirebaseAuthException catch (e) {
-      return e.message;
+  //get UID
+  Future<String> getCurrentUID() async {
+    return (await _auth.currentUser()).uid;
+  }
+
+  //auth change user stream
+  Stream<User> get user {
+    return _auth.onAuthStateChanged.map((FirebaseUser user) => _userFromFirebaseUser(user));
+  }
+
+  //SignIn Using Email Password
+  Future singnInUsingEmail(String email, String password) async{
+    try{
+      AuthResult authResult = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      FirebaseUser user = authResult.user;
+      return _userFromFirebaseUser(user);
+    }catch(e){
+      print(e.toString());
+      return null;
     }
   }
 
+  // Reset Password
+  Future sendPasswordResetEmail(String email) async {
+    return _auth.sendPasswordResetEmail(email: email);
+  }
 
-  Future<String> signUp({String email, String password}) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return "Signed up";
-    } on FirebaseAuthException catch (e) {
-      return e.message;
+  // Email & Password Sign Up
+  Future createUserWithEmailAndPassword(String email, String password, UserDetails userDetails,BuildContext context) async {
+    try{
+      print(getCurrentUID().asStream());
+      AuthResult authResult = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      FirebaseUser user = authResult.user;
+      //add User Details
+      await DatabaseServices(uid: user.uid).initiateDocument();
+      await DatabaseServices(uid: user.uid).updateUserData(UserDetails(
+        name: userDetails.name,
+        uid: user.uid,
+        city: userDetails.city,
+        type:userDetails.type,
+        email: userDetails.email,
+
+      ));
+      return _userFromFirebaseUser(user);
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
+
+  //sign Out
+  Future signOut() async{
+    try{
+      return await _auth.signOut();
+    }catch(e){
+      return null;
     }
   }
 }
-
