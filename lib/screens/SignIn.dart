@@ -31,7 +31,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(height: 15,),
                 Align(alignment:Alignment.topLeft,child: Text("Welcome back.",style: GoogleFonts.rubik(fontSize: 28, color: Colors.grey, fontWeight: FontWeight.w500,),)),
                 Align(alignment:Alignment.topLeft,child: Text("You've been missed !",style: GoogleFonts.rubik(fontSize: 28, color: Colors.grey, fontWeight: FontWeight.w500,),)),
-            Container(
+                Container(
               margin: EdgeInsets.only(top: 40, right: 8, left: 8),
               //color: Colors.grey,
               height: 60,

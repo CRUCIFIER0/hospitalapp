@@ -62,6 +62,9 @@ class AuthService{
         city: userDetails.city,
         type:userDetails.type,
         email: userDetails.email,
+        covaxin: userDetails.covaxin,
+        covishield: userDetails.covishield,
+
 
       ));
       return _userFromFirebaseUser(user);

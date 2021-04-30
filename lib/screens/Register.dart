@@ -230,7 +230,7 @@ class _RegisterState extends State<Register> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 130,),
+                  SizedBox(height: 70,),
 
                   Padding(
                     padding: const EdgeInsets.only(left: 45),
@@ -268,6 +268,8 @@ class _RegisterState extends State<Register> {
                           city: city,
                           email: user,
                           type: type,
+                          covishield: "0",
+                          covaxin: "0"
                         );
                         await _auth.createUserWithEmailAndPassword(user, pass,userDetails, context);
                       },
@@ -283,16 +285,7 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          await collectionReference.add({'name': user});
-                        },
-                        child: Text(
-                          'Add Data',
-                          style: TextStyle(fontSize: 20),
-                        )),
-                  ),
+
 
 
 

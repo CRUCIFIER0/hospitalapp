@@ -24,6 +24,8 @@ class RedirectingScreen extends StatelessWidget {
             type: snapshot.data.documents[0]['type'],
             city: snapshot.data.documents[0]['city'],
             email: snapshot.data.documents[0]['email'],
+            covaxin: snapshot.data.documents[0]['covaxin'],
+            covishield: snapshot.data.documents[0]['covishield'],
 
           ));
         }
