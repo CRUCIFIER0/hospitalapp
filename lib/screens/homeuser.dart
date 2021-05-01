@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hospitalapp/models/userdetails.dart';
 import 'package:hospitalapp/services/auth.dart';
 
@@ -16,18 +17,22 @@ class _HomeuserState extends State<Homeuser> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(28, 27, 37, 1),
-      body: Center(
+      body: Container(
+        margin: EdgeInsets.only(left: 24,right: 20,top: 50),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("HOME USER"),
-            RaisedButton(
-              onPressed: () async{
 
-                await _auth.signOut();
-              },
-              child: Text("Sign out"),
-            ),
+          children: [
+            Align(alignment:Alignment.topLeft,child: Text("Hey,",style: GoogleFonts.rubik(fontSize: 35, color: Colors.white, fontWeight: FontWeight.w700,),)),
+
+            Align(alignment:Alignment.topLeft,child: Text(widget.userDetails.name,style: GoogleFonts.rubik(fontSize: 35, color: Colors.white, fontWeight: FontWeight.w700,),)),
+            Image(image: AssetImage('assets/health-vaccine-row.png'),height: 250,width: 3000,fit: BoxFit.cover,),
+
+            SizedBox(height: 50,),
+            Align(alignment:Alignment.topLeft,child: Text("Let's get you vaccinated in your nearest hospital.",style: GoogleFonts.rubik(fontSize: 25, color: Colors.grey, fontWeight: FontWeight.w700,),)),
+            SizedBox(height: 30,),
+            Align(alignment:Alignment.topLeft,child: Text("Explore your nearest vaccination centers.",style: GoogleFonts.rubik(fontSize: 25, color: Colors.blueGrey, fontWeight: FontWeight.w700,),)),
+
+
           ],
         ),
       ),

@@ -56,6 +56,10 @@ flutter:
   assets:
     - assets/health-vitamins-suplements.png
     - assets/health-doctor-vaccine1.png
+    - assets/health-doctor-vaccine.png
+    - assets/health-meditation.png
+    - assets/health-hospital-bed.png
+    - assets/health-vaccine-row.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

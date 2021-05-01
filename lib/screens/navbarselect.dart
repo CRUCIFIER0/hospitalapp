@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hospitalapp/models/userdetails.dart';
+import 'package:hospitalapp/screens/Covidhelp.dart';
 import 'package:hospitalapp/screens/Home.dart';
+import 'package:hospitalapp/screens/Profile.dart';
 
 import 'package:hospitalapp/screens/homeuser.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:hospitalapp/screens/recenttransactions.dart';
 import 'package:hospitalapp/screens/search.dart';
 import 'package:hospitalapp/widgets/transaction.dart';
 import 'package:ss_bottom_navbar/ss_bottom_navbar.dart';
@@ -34,11 +37,15 @@ class _NavBarSelectState extends State<NavBarSelect> {
   Widget build(BuildContext context) {
     final tabu=[
       Homeuser(userDetails: widget.userDetails,),
-      Transaction()
+      Search(userDetails: widget.userDetails),
+      Covidhelp(),
+      Profile(userDetails: widget.userDetails)
     ];
     final tabh=[
       Home(userDetails: widget.userDetails,),
-      Search()
+      Search(userDetails: widget.userDetails),
+      RecentTrans(userDetails: widget.userDetails),
+      Profile(userDetails: widget.userDetails)
 
     ];
 
@@ -95,23 +102,31 @@ class _NavBarSelectState extends State<NavBarSelect> {
 
       (widget.userDetails.type == 'user') == true ? BottomNavigationBar(
         currentIndex: _c,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor:Color.fromRGBO(23, 23, 31, 1) ,
+        iconSize: 22,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
+        selectedFontSize: 10,
+        unselectedFontSize: 0,
         items: [
           BottomNavigationBarItem(
-              icon: Icon(EvaIcons.home),
-              title: Text('')
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(EvaIcons.search),
-              title: Text('')
+            icon: Icon(EvaIcons.home),
+            title: Text('.'),
 
           ),
           BottomNavigationBarItem(
-              icon: Icon(EvaIcons.link2Outline),
-              title: Text('')
+            icon: Icon(EvaIcons.search),
+            title: Text('.'),
+
           ),
           BottomNavigationBarItem(
-              icon:Icon(EvaIcons.person),
-              title: Text('')
+            icon: Icon(EvaIcons.link2Outline),
+            title: Text('.'),
+          ),
+          BottomNavigationBarItem(
+            icon:Icon(EvaIcons.person),
+            title: Text('.'),
           )
         ],
         onTap: (index){

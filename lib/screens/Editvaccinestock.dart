@@ -123,6 +123,12 @@ class _EditvaccinestockState extends State<Editvaccinestock> {
                               "covaxin" : covaxin.isEmpty? widget.userDetails.covaxin: covaxin,
                               "covishield" :covishield.isEmpty?widget.userDetails.covishield: covishield,
                           });
+
+                      await Firestore.instance.collection("hospitals").document(widget.userDetails.uid).updateData(
+                          {
+                            "covaxin" : covaxin.isEmpty? widget.userDetails.covaxin: covaxin,
+                            "covishield" :covishield.isEmpty?widget.userDetails.covishield: covishield,
+                          });
                     },
                     child: Container(
                       height: 70,

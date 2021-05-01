@@ -261,17 +261,33 @@ class _RegisterState extends State<Register> {
                     ),
                     child: InkWell(
                       onTap: () async{
+                        if(user=="hospital") {
+                          final UserDetails userDetails = UserDetails(
+                              name: name,
+                              uid: '',
+                              city: city,
+                              email: user,
+                              type: type,
+                              covishield: "0",
+                              covaxin: "0"
+                          );
+                          await _auth.createUserWithEmailAndPassword(
+                              user, pass, userDetails, context);
+                        }
+                        else{
+                          final UserDetails userDetails = UserDetails(
+                              name: name,
+                              uid: '',
+                              city: city,
+                              email: user,
+                              type: type,
+                              covishield: "0",
+                              covaxin: "0"
+                          );
+                          await _auth.createUserWithEmailAndPasswordpublic(
+                              user, pass, userDetails, context);
+                        }
 
-                        final UserDetails userDetails = UserDetails(
-                          name: name,
-                          uid: '',
-                          city: city,
-                          email: user,
-                          type: type,
-                          covishield: "0",
-                          covaxin: "0"
-                        );
-                        await _auth.createUserWithEmailAndPassword(user, pass,userDetails, context);
                       },
                       child: Container(
                         height: 70,

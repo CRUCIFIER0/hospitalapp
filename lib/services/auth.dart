@@ -64,8 +64,41 @@ class AuthService{
         email: userDetails.email,
         covaxin: userDetails.covaxin,
         covishield: userDetails.covishield,
+      ));
+      await DatabaseServices(uid: user.uid).makerecord(UserDetails(
+        name: userDetails.name,
+        uid: user.uid,
+        city: userDetails.city,
+        type:userDetails.type,
+        email: userDetails.email,
+        covaxin: userDetails.covaxin,
+        covishield: userDetails.covishield,
+      ));
+      return _userFromFirebaseUser(user);
+    }catch(e){
+      print(e);
+      return null;
+    }
+  }
 
-
+  Future createUserWithEmailAndPasswordpublic(String email, String password, UserDetails userDetails,BuildContext context) async {
+    try{
+      print(getCurrentUID().asStream());
+      AuthResult authResult = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      FirebaseUser user = authResult.user;
+      //add User Details
+      await DatabaseServices(uid: user.uid).initiateDocument();
+      await DatabaseServices(uid: user.uid).updateUserData(UserDetails(
+        name: userDetails.name,
+        uid: user.uid,
+        city: userDetails.city,
+        type:userDetails.type,
+        email: userDetails.email,
+        covaxin: userDetails.covaxin,
+        covishield: userDetails.covishield,
       ));
       return _userFromFirebaseUser(user);
     }catch(e){
